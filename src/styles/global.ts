@@ -5,11 +5,16 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    user-select: none;
   }
 
   :focus {
     outline: none;
     box-shadow: 0 0 0 2px ${(props) => props.theme.white};
+  }
+
+  img {
+    pointer-events: none;
   }
 
   body {
