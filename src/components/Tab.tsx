@@ -11,6 +11,8 @@ import {
   Button,
 } from '../styles/components/tab'
 
+import { toast } from 'react-toastify'
+
 interface TabProps {
   info: IVideoInfo
 }
@@ -20,6 +22,15 @@ export function Tab({ info }: TabProps) {
 
   async function handlerDownloadAudio(id: string, bitrate: number) {
     setInDownload(true)
+    toast.info('♻️ Conversão Iniciada!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      theme: 'dark',
+    })
     try {
       const response = await api.get(`/downloadAudio/${id}`, {
         responseType: 'blob',
@@ -40,7 +51,38 @@ export function Tab({ info }: TabProps) {
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
+
+      toast.success('✅ Conversão concluída!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        theme: 'dark',
+      })
     } catch (error) {
+      if (error.response.status === 413) {
+        toast.error('❌ Vídeo maior que 10 minutos!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          theme: 'dark',
+        })
+      } else {
+        toast.error('❌ Erro ao fazer o download!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          theme: 'dark',
+        })
+      }
       console.error('Erro ao fazer o download:', error)
     }
 
@@ -49,6 +91,15 @@ export function Tab({ info }: TabProps) {
 
   async function handlerDownload(id: string, quality: number) {
     setInDownload(true)
+    toast.info('♻️ Conversão Iniciada!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      theme: 'dark',
+    })
     try {
       const response = await api.get(`/download/${id}`, {
         responseType: 'blob',
@@ -69,7 +120,38 @@ export function Tab({ info }: TabProps) {
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
+
+      toast.success('✅ Conversão concluída!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        theme: 'dark',
+      })
     } catch (error) {
+      if (error.response.status === 413) {
+        toast.error('❌ Vídeo maior que 10 minutos!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          theme: 'dark',
+        })
+      } else {
+        toast.error('❌ Erro ao fazer o download!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          theme: 'dark',
+        })
+      }
       console.error('Erro ao fazer o download:', error)
     }
 
@@ -94,7 +176,7 @@ export function Tab({ info }: TabProps) {
           <tbody>
             {info.mp4Qualities.map((quality) => (
               <tr key={quality.itag}>
-                <td>mp4 {quality.quality}</td>
+                <td>MP4 {quality.quality}</td>
                 <td>
                   {quality.fileSize ? quality.fileSize?.toFixed(2) : '0.00'}MB
                 </td>
@@ -123,7 +205,7 @@ export function Tab({ info }: TabProps) {
           <tbody>
             {info.mp3Qualities.map((quality) => (
               <tr key={quality.itag}>
-                <td>mp3 {quality.quality}</td>
+                <td>MP3 {quality.quality}</td>
                 <td>
                   {quality.fileSize ? quality.fileSize?.toFixed(2) : '0.00'}MB
                 </td>

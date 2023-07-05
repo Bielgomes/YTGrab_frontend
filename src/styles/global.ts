@@ -9,7 +9,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   :root {
-    @media (max-width: 1200px) {
+    @media (max-width: 770px) {
       font-size: 14px;
     }
   }

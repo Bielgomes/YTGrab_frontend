@@ -83,6 +83,13 @@ export const Table = styled.table`
   }
 
   @media (max-width: 1200px) {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
     td {
       padding: 1.25rem 0.5rem;
       min-width: 10.3rem;
@@ -90,10 +97,6 @@ export const Table = styled.table`
 
     overflow-x: scroll;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
 `
 
 export const Button = styled.button`
@@ -109,4 +112,9 @@ export const Button = styled.button`
   padding: 0.5rem 2rem;
 
   cursor: pointer;
+
+  &:disabled {
+    background-color: ${({ theme }) => theme['zinc-700']};
+    cursor: not-allowed;
+  }
 `
