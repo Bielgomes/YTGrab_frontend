@@ -1,3 +1,7 @@
+import { useState } from 'react'
+
+import { IVideoInfo } from '../App'
+import { api } from '../lib/axios'
 import {
   Container,
   Content,
@@ -7,10 +11,74 @@ import {
   Button,
 } from '../styles/components/tab'
 
-export function Tab() {
+interface TabProps {
+  info: IVideoInfo
+}
+
+export function Tab({ info }: TabProps) {
+  const [inDownload, setInDownload] = useState<boolean>(false)
+
+  async function handlerDownloadAudio(id: string, bitrate: number) {
+    setInDownload(true)
+    try {
+      const response = await api.get(`/downloadAudio/${id}`, {
+        responseType: 'blob',
+        headers: {
+          authorization: import.meta.env.VITE_AUTHORIZATION,
+        },
+        params: {
+          bitrate,
+        },
+      })
+
+      const blob = new Blob([response.data], { type: 'audio/mp3' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `${info.title}-ytgrab.mp3`)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Erro ao fazer o download:', error)
+    }
+
+    setInDownload(false)
+  }
+
+  async function handlerDownload(id: string, quality: number) {
+    setInDownload(true)
+    try {
+      const response = await api.get(`/download/${id}`, {
+        responseType: 'blob',
+        headers: {
+          authorization: import.meta.env.VITE_AUTHORIZATION,
+        },
+        params: {
+          quality,
+        },
+      })
+
+      const blob = new Blob([response.data], { type: 'video/mp4' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `${info.title}-ytgrab.mp4`)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Erro ao fazer o download:', error)
+    }
+
+    setInDownload(false)
+  }
+
   return (
     <Container defaultValue="MP4" orientation="vertical">
-      <List aria-label="Baixe um vídeo em MP4 ou MP3">
+      <List aria-label="Download a video in MP4 or MP3">
         <Trigger value="MP4">MP4</Trigger>
         <Trigger value="MP3">MP3</Trigger>
       </List>
@@ -18,26 +86,28 @@ export function Tab() {
         <Table>
           <thead>
             <tr>
-              <td>Resolução</td>
-              <td>Tamanho</td>
+              <td>Resolution</td>
+              <td>Size (Approx)</td>
               <td>Download</td>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>.mp4 1080p</td>
-              <td>80MB</td>
-              <td>
-                <Button>BAIXAR</Button>
-              </td>
-            </tr>
-            <tr>
-              <td>.mp4 720p</td>
-              <td>50MB</td>
-              <td>
-                <Button>BAIXAR</Button>
-              </td>
-            </tr>
+            {info.mp4Qualities.map((quality) => (
+              <tr key={quality.itag}>
+                <td>mp4 {quality.quality}</td>
+                <td>
+                  {quality.fileSize ? quality.fileSize?.toFixed(2) : '0.00'}MB
+                </td>
+                <td>
+                  <Button
+                    disabled={inDownload}
+                    onClick={() => handlerDownload(info.id, quality.itag)}
+                  >
+                    DOWNLOAD
+                  </Button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Content>
@@ -45,26 +115,28 @@ export function Tab() {
         <Table>
           <thead>
             <tr>
-              <td>Resolução</td>
-              <td>Tamanho</td>
+              <td>Resolution</td>
+              <td>Size (Approx)</td>
               <td>Download</td>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>.mp3 320kbps</td>
-              <td>80MB</td>
-              <td>
-                <Button>BAIXAR</Button>
-              </td>
-            </tr>
-            <tr>
-              <td>.mp3 256kbps</td>
-              <td>50MB</td>
-              <td>
-                <Button>BAIXAR</Button>
-              </td>
-            </tr>
+            {info.mp3Qualities.map((quality) => (
+              <tr key={quality.itag}>
+                <td>mp3 {quality.quality}</td>
+                <td>
+                  {quality.fileSize ? quality.fileSize?.toFixed(2) : '0.00'}MB
+                </td>
+                <td>
+                  <Button
+                    disabled={inDownload}
+                    onClick={() => handlerDownloadAudio(info.id, quality.itag)}
+                  >
+                    DOWNLOAD
+                  </Button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Content>

@@ -5,6 +5,11 @@ export const Container = styled.header`
 
   margin: 0 auto;
   margin-top: -1.812rem;
+
+  @media (max-width: 779px) {
+    padding: 0 1rem;
+    padding-bottom: 2rem;
+  }
 `
 
 export const Input = styled.input`

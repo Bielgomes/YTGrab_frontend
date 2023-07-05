@@ -1,4 +1,4 @@
-import { VideoInfo } from '../App'
+import { IVideoInfo } from '../App'
 import {
   PreviewContainer,
   PreviewContent,
@@ -10,20 +10,20 @@ import {
 import { Tab } from './Tab'
 
 interface PreviewProps {
-  info: VideoInfo
+  info: IVideoInfo
 }
 
-function durationFormat(duracao: string) {
-  const padrao = /PT(\d+H)?(\d+M)?(\d+S)?/
-  const regex = duracao.match(padrao)!
+function durationFormat(duracao: number) {
+  const hours = Math.floor(duracao / 3600)
+  const minutes = Math.floor((duracao - hours * 3600) / 60)
+  const seconds = duracao - hours * 3600 - minutes * 60
 
-  const horas = regex[1] ? parseInt(regex[1].slice(0, -1)) : 0
-  const minutos = regex[2] ? parseInt(regex[2].slice(0, -1)) : 0
-  const segundos = regex[3] ? parseInt(regex[3].slice(0, -1)) : 0
-  const duracaoFormatada = `${horas.toString().padStart(2, '0')}:${minutos
-    .toString()
-    .padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`
-  return duracaoFormatada
+  let formatted = ''
+  formatted += `${hours}:`.padStart(3, '0')
+  formatted += `${minutes}:`.padStart(3, '0')
+  formatted += `${seconds}`.padStart(2, '0')
+
+  return formatted
 }
 
 export function Preview({ info }: PreviewProps) {
@@ -33,7 +33,7 @@ export function Preview({ info }: PreviewProps) {
         <img src={info.thumbnail} width={280} height={280} alt="logo" />
         <PreviewFields>
           <PreviewField>
-            <Title>Nome</Title>
+            <Title>Name</Title>
             <p>
               {info.title.length > 50
                 ? `${info?.title.slice(0, 50)}...`
@@ -41,12 +41,12 @@ export function Preview({ info }: PreviewProps) {
             </p>
           </PreviewField>
           <PreviewField>
-            <Title>Duração</Title>
-            <p>{durationFormat(info.duration)}</p>
+            <Title>Duraction</Title>
+            <p>{durationFormat(info.duraction)}</p>
           </PreviewField>
         </PreviewFields>
       </PreviewContent>
-      <Tab />
+      <Tab info={info} />
     </PreviewContainer>
   )
 }

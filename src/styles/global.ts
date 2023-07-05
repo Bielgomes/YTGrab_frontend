@@ -8,6 +8,12 @@ export const GlobalStyle = createGlobalStyle`
     user-select: none;
   }
 
+  :root {
+    @media (max-width: 1200px) {
+      font-size: 14px;
+    }
+  }
+
   :focus {
     outline: none;
     box-shadow: 0 0 0 2px ${(props) => props.theme.white};

@@ -9,46 +9,53 @@ import { defaultTheme } from './styles/themes/default'
 import { Container, Input } from './styles/pages/home'
 import { Header } from './components/Header'
 import { Preview } from './components/Preview'
+import { Informations } from './components/Informations'
+import { NotFounded } from './components/NotFounded'
 
-export interface VideoInfo {
+interface IQuality {
+  itag: number
+  quality: string
+  fileSize?: number
+}
+
+export interface IVideoInfo {
+  id: string
   title: string
-  description: string
   thumbnail: string
-  duration: string
+  duraction: number
+  mp4Qualities: IQuality[]
+  mp3Qualities: IQuality[]
 }
 
 export function App() {
   const [url, setUrl] = useState<string>('')
-  const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null)
+  const [videoInfo, setVideoInfo] = useState<IVideoInfo | null>(null)
 
   function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
+    const newUrl = event.target.value.split('v=')[1]
+      ? event.target.value.split('v=')[1]
+      : event.target.value
     api
-      .get('', {
-        params: {
-          id: event.target.value.split('v=')[1],
-          key: import.meta.env.VITE_CREDENTIALS,
-          part: 'contentDetails,snippet',
+      .get(`/info/${newUrl}`, {
+        headers: {
+          authorization: import.meta.env.VITE_AUTHORIZATION,
         },
       })
       .then((response) => {
-        if (!response.data.items.length) {
+        if (response.status === 404) {
           setVideoInfo(null)
           return
         }
 
-        const { title, description, thumbnails } =
-          response.data.items[0].snippet
-
-        const { duration } = response.data.items[0].contentDetails
-
         const videoObj = {
-          title,
-          description,
-          thumbnail: thumbnails.high.url,
-          duration,
+          id: newUrl,
+          ...response.data,
         }
 
         setVideoInfo(videoObj)
+      })
+      .catch(() => {
+        setVideoInfo(null)
       })
 
     setUrl(event.target.value)
@@ -59,19 +66,19 @@ export function App() {
       <Header />
       <Container>
         <Input
-          placeholder="Cole aqui a URL"
+          placeholder="Paste the YouTube video link here"
           value={url}
           onChange={handlerUrlChange}
         />
 
         {url === '' ? (
-          <h1>YTGrab é um site para baixar vídeos com alta velocidade!</h1>
+          <Informations />
         ) : videoInfo ? (
           <>
             <Preview info={videoInfo!} />
           </>
         ) : (
-          <h1>Video não encontrado</h1>
+          <NotFounded />
         )}
       </Container>
 

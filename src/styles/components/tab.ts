@@ -81,6 +81,19 @@ export const Table = styled.table`
       border-bottom-right-radius: 6px;
     }
   }
+
+  @media (max-width: 1200px) {
+    td {
+      padding: 1.25rem 0.5rem;
+      min-width: 10.3rem;
+    }
+
+    overflow-x: scroll;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 export const Button = styled.button`

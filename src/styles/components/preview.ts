@@ -7,6 +7,10 @@ export const PreviewContainer = styled.div`
   margin-top: 2.187rem;
 
   gap: 2rem;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
 `
 
 export const PreviewContent = styled.div`
@@ -16,6 +20,12 @@ export const PreviewContent = styled.div`
   > img {
     border-radius: 8px 8px 0 0;
     object-fit: cover;
+  }
+
+  @media (max-width: 1200px) {
+    img {
+      width: 100%;
+    }
   }
 `
 
