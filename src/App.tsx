@@ -59,15 +59,7 @@ export function App() {
       })
       .catch((error: any) => {
         if (error?.response?.status === 404) {
-          toast.error('❌ Video not found!', {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            theme: 'dark',
-          })
+          console.log(error.response.data)
         } else {
           toast.error('❌ An error occurred, please try again later!', {
             position: 'top-right',

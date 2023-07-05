@@ -91,8 +91,7 @@ export const Table = styled.table`
 
   @media (max-width: 768px) {
     td {
-      padding: 1.25rem 0.5rem;
-      min-width: 10.3rem;
+      min-width: 13rem;
     }
 
     overflow-x: scroll;
