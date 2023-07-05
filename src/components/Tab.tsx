@@ -22,7 +22,7 @@ export function Tab({ info }: TabProps) {
 
   async function handlerDownloadAudio(id: string, bitrate: number) {
     setInDownload(true)
-    toast.info('♻️ Conversão Iniciada!', {
+    toast.info('♻️ Conversion Started! Please wait.', {
       position: 'top-right',
       autoClose: 3000,
       hideProgressBar: false,
@@ -52,7 +52,7 @@ export function Tab({ info }: TabProps) {
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
 
-      toast.success('✅ Conversão concluída!', {
+      toast.success('✅ Conversion completed!', {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -61,9 +61,9 @@ export function Tab({ info }: TabProps) {
         draggable: false,
         theme: 'dark',
       })
-    } catch (error) {
-      if (error.response.status === 413) {
-        toast.error('❌ Vídeo maior que 10 minutos!', {
+    } catch (error: any) {
+      if (error?.response?.status === 413) {
+        toast.error('❌ Video longer than 10 minutes!', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -73,7 +73,7 @@ export function Tab({ info }: TabProps) {
           theme: 'dark',
         })
       } else {
-        toast.error('❌ Erro ao fazer o download!', {
+        toast.error('❌ Error when downloading!', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -83,7 +83,6 @@ export function Tab({ info }: TabProps) {
           theme: 'dark',
         })
       }
-      console.error('Erro ao fazer o download:', error)
     }
 
     setInDownload(false)
@@ -91,7 +90,7 @@ export function Tab({ info }: TabProps) {
 
   async function handlerDownload(id: string, quality: number) {
     setInDownload(true)
-    toast.info('♻️ Conversão Iniciada!', {
+    toast.info('♻️ Conversion Started! Please wait.', {
       position: 'top-right',
       autoClose: 3000,
       hideProgressBar: false,
@@ -121,7 +120,7 @@ export function Tab({ info }: TabProps) {
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
 
-      toast.success('✅ Conversão concluída!', {
+      toast.success('✅ Conversion completed!', {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -130,9 +129,9 @@ export function Tab({ info }: TabProps) {
         draggable: false,
         theme: 'dark',
       })
-    } catch (error) {
-      if (error.response.status === 413) {
-        toast.error('❌ Vídeo maior que 10 minutos!', {
+    } catch (error: any) {
+      if (error?.response?.status === 413) {
+        toast.error('❌ Video longer than 10 minutes!', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -142,7 +141,7 @@ export function Tab({ info }: TabProps) {
           theme: 'dark',
         })
       } else {
-        toast.error('❌ Erro ao fazer o download!', {
+        toast.error('❌ Error when downloading!', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -152,7 +151,6 @@ export function Tab({ info }: TabProps) {
           theme: 'dark',
         })
       }
-      console.error('Erro ao fazer o download:', error)
     }
 
     setInDownload(false)

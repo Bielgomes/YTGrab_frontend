@@ -12,6 +12,8 @@ import { Preview } from './components/Preview'
 import { Informations } from './components/Informations'
 import { NotFounded } from './components/NotFounded'
 
+import { toast } from 'react-toastify'
+
 interface IQuality {
   itag: number
   quality: string
@@ -35,6 +37,12 @@ export function App() {
     const newUrl = event.target.value.split('v=')[1]
       ? event.target.value.split('v=')[1]
       : event.target.value
+
+    if (newUrl === '') {
+      setUrl('')
+      return
+    }
+
     api
       .get(`/info/${newUrl}`, {
         headers: {
@@ -42,11 +50,6 @@ export function App() {
         },
       })
       .then((response) => {
-        if (response.status === 404) {
-          setVideoInfo(null)
-          return
-        }
-
         const videoObj = {
           id: newUrl,
           ...response.data,
@@ -54,7 +57,29 @@ export function App() {
 
         setVideoInfo(videoObj)
       })
-      .catch(() => {
+      .catch((error: any) => {
+        if (error?.response?.status === 404) {
+          toast.error('❌ Video not found!', {
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            theme: 'dark',
+          })
+        } else {
+          toast.error('❌ An error occurred, please try again later!', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            theme: 'dark',
+          })
+        }
+
         setVideoInfo(null)
       })
 
