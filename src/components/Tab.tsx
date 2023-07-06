@@ -34,9 +34,6 @@ export function Tab({ info }: TabProps) {
     try {
       const response = await api.get(`/downloadAudio/${id}`, {
         responseType: 'blob',
-        headers: {
-          authorization: import.meta.env.VITE_AUTHORIZATION,
-        },
         params: {
           bitrate,
         },
@@ -102,9 +99,6 @@ export function Tab({ info }: TabProps) {
     try {
       const response = await api.get(`/download/${id}`, {
         responseType: 'blob',
-        headers: {
-          authorization: import.meta.env.VITE_AUTHORIZATION,
-        },
         params: {
           quality,
         },

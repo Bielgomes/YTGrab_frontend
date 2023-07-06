@@ -44,11 +44,7 @@ export function App() {
     }
 
     api
-      .get(`/info/${newUrl}`, {
-        headers: {
-          authorization: import.meta.env.VITE_AUTHORIZATION,
-        },
-      })
+      .get(`/info/${newUrl}`)
       .then((response) => {
         const videoObj = {
           id: newUrl,
