@@ -33,11 +33,16 @@ export function App() {
   const [url, setUrl] = useState<string>('')
   const [videoInfo, setVideoInfo] = useState<IVideoInfo | null>(null)
 
-  function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
-    const newUrl = event.target.value.split('v=')[1]
-      ? event.target.value.split('v=')[1]
-      : event.target.value
+  function extractVideoId(url: string): string | null {
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))?([\w-]{11})(?:\S+)?$/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  }
+  
+  
 
+  function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
+    const newUrl = extractVideoId(event.target.value);
     if (newUrl === '') {
       setUrl('')
       return
