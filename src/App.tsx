@@ -62,7 +62,7 @@ export function App() {
         if (error?.response?.status === 404) {
           console.log(error.response.data)
         } else {
-          toast.error('❌ An error occurred, please try again later, Sorry!', {
+          toast.error('❌ An error occurred, please try again later, sorry!', {
             position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,
