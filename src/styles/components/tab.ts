@@ -95,7 +95,6 @@ export const Table = styled.table`
     }
 
     overflow-x: scroll;
-
 `
 
 export const Button = styled.button`
