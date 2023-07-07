@@ -17,6 +17,22 @@ interface TabProps {
   info: IVideoInfo
 }
 
+const MP4Quality = {
+  137: '1080p',
+  136: '720p',
+  135: '480p',
+  18: '360p',
+  160: '144p',
+}
+
+const MP3Bitrate = {
+  320: '320kbps',
+  256: '256kbps',
+  192: '192kbps',
+  128: '128kbps',
+  64: '64kbps',
+}
+
 export function Tab({ info }: TabProps) {
   const [inDownload, setInDownload] = useState<boolean>(false)
 
@@ -43,7 +59,10 @@ export function Tab({ info }: TabProps) {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', `${info.title}-ytgrab.mp3`)
+      link.setAttribute(
+        'download',
+        `ytgrab - ${info.title} (${MP3Bitrate[bitrate]}).mp3`,
+      )
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -108,7 +127,10 @@ export function Tab({ info }: TabProps) {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', `${info.title}-ytgrab.mp4`)
+      link.setAttribute(
+        'download',
+        `ytgrab - ${info.title} (${MP4Quality[quality]}).mp4`,
+      )
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)

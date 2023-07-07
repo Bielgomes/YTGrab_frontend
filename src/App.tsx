@@ -32,6 +32,7 @@ export interface IVideoInfo {
 export function App() {
   const [url, setUrl] = useState<string>('')
   const [videoInfo, setVideoInfo] = useState<IVideoInfo | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
     const newUrl = event.target.value.split('v=')[1]
@@ -43,6 +44,7 @@ export function App() {
       return
     }
 
+    setLoading(true)
     api
       .get(`/info/${newUrl}`)
       .then((response) => {
@@ -52,6 +54,7 @@ export function App() {
         }
 
         setVideoInfo(videoObj)
+        setLoading(false)
       })
       .catch((error: any) => {
         if (error?.response?.status === 404) {
@@ -69,6 +72,7 @@ export function App() {
         }
 
         setVideoInfo(null)
+        setLoading(false)
       })
 
     setUrl(event.target.value)
@@ -84,7 +88,7 @@ export function App() {
           onChange={handlerUrlChange}
         />
 
-        {url === '' ? (
+        {url === '' || loading ? (
           <Informations />
         ) : videoInfo ? (
           <>
