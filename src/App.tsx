@@ -34,11 +34,16 @@ export function App() {
   const [videoInfo, setVideoInfo] = useState<IVideoInfo | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
-  function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
-    const newUrl = event.target.value.split('v=')[1]
-      ? event.target.value.split('v=')[1]
-      : event.target.value
+  function extractVideoId(url: string): string | null {
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))?([\w-]{11})(?:\S+)?$/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  }
+  
+  
 
+  function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
+    const newUrl = extractVideoId(event.target.value);
     if (newUrl === '') {
       setUrl('')
       return
@@ -60,7 +65,7 @@ export function App() {
         if (error?.response?.status === 404) {
           console.log(error.response.data)
         } else {
-          toast.error('❌ An error occurred, please try again later!', {
+          toast.error('❌ An error occurred, please try again later, sorry!', {
             position: 'top-right',
             autoClose: 3000,
             hideProgressBar: false,

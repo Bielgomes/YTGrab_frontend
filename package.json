@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext .ts,.tsx --fix",
-    "preview": "vite preview"
+    "start": "vite preview --port 80"
   },
   "dependencies": {
     "@radix-ui/react-popover": "1.0.6",
