@@ -17,7 +17,9 @@ interface TabProps {
   info: IVideoInfo
 }
 
-const MP4Quality = {
+type TypeQuality = Record<number, string>
+
+const MP4Quality: TypeQuality = {
   137: '1080p',
   136: '720p',
   135: '480p',
@@ -25,7 +27,7 @@ const MP4Quality = {
   160: '144p',
 }
 
-const MP3Bitrate = {
+const MP3Bitrate: TypeQuality = {
   320: '320kbps',
   256: '256kbps',
   192: '192kbps',

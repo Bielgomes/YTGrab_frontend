@@ -35,15 +35,14 @@ export function App() {
   const [loading, setLoading] = useState<boolean>(false)
 
   function extractVideoId(url: string): string | null {
-    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))?([\w-]{11})(?:\S+)?$/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))?([\w-]{11})(?:\S+)?$/
+    const match = url.match(regex)
+    return match ? match[1] : null
   }
-  
-  
 
   function handlerUrlChange(event: ChangeEvent<HTMLInputElement>) {
-    const newUrl = extractVideoId(event.target.value);
+    const newUrl = extractVideoId(event.target.value)
     if (newUrl === '') {
       setUrl('')
       return
